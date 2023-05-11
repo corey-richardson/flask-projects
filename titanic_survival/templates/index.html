@@ -1,6 +1,28 @@
 <form action="/" method="post">
     {{ get_passenger_form.hidden_tag() }}
-    {{ get_passenger_form.my_textfield.label }}
-    {{ get_passenger_form.my_textfield() }}
-    {{ get_passenger_form.my_submit() }}
+
+    {{ get_passenger_form.sex.label }}
+    <table>
+        <tr>
+            {% for btn in get_passenger_form.sex %}
+            <td>{{ btn()     }}</td>
+            <td>{{ btn.label }}</td>
+            {% endfor %}
+        </tr>
+    </table> <br>
+
+    {{ get_passenger_form.age.label }}
+    {{ get_passenger_form.age() }} <br><br>
+
+    {{ get_passenger_form.p_class.label }}
+    <table>
+        <tr>
+            {% for btn in get_passenger_form.p_class %}
+            <td>{{ btn()     }}</td>
+            <td>{{ btn.label }}</td>
+            {% endfor %}
+        </tr>
+    </table> <br>
+
+    {{ get_passenger_form.submit() }}
 </form>

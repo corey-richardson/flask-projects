@@ -1,0 +1,27 @@
+{% if sex == 1.0 %}
+  <p>Sex: Female</p> 
+{% elif sex == 0.0 %}
+   <p>Sex: Male</p> 
+{% else %}
+   <p>Survived: buggy code</p> 
+{% endif %}
+
+<p>Age: {{ age | int | default("Failed to load") }} </p>
+
+{% if first == 1.0 %}
+  <p>Class: First</p> 
+{% elif second == 1.0 %}
+   <p>Class: Second</p> 
+{% else %}
+   <p>Class: Third</p> 
+{% endif %}
+
+{% if survived == 1.0 %}
+  <p>Survived: True</p> 
+{% elif survived == 0.0 %}
+   <p>Survived: False</p> 
+{% else %}
+   <p>Survived: buggy code</p> 
+{% endif %}
+
+<p>Probability Survived: {{ p_survived | default("Failed to load") }}% </p>
