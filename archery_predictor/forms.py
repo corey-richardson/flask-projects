@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import RadioField, StringField, SubmitField
+from wtforms import RadioField, SubmitField, IntegerField
 from wtforms.validators import DataRequired
 
 class GetScoreData(FlaskForm):
@@ -19,5 +19,5 @@ class GetScoreData(FlaskForm):
             (100.0, "100 yards")
         ]
     )
-    days_till = StringField("Days Till Shoot: ", validators=[DataRequired()])
+    days_till = IntegerField("Days Till Shoot: ", validators=[DataRequired()])
     submit = SubmitField("Submit")

@@ -3,10 +3,7 @@ import pandas as pd
 from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 
-from flask import Flask, render_template, request, redirect, url_for, session
-from flask_wtf import FlaskForm
-from wtforms import RadioField, StringField, SubmitField
-from wtforms.validators import DataRequired
+from flask import Flask, render_template, redirect, url_for, session
 
 from forms import GetScoreData
 
