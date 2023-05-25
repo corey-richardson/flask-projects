@@ -90,3 +90,39 @@ def submitted():
         avg_score = f"{avg_score:.3f}",
         gold_pct = f"{gold_pct:.2f}",
         _external=True, _scheme='https')
+    
+from matplotlib import pyplot as plt
+from matplotlib.colors import ListedColormap
+import seaborn as sns
+print("plotting")
+
+score_data["day_of_week"] = score_data.date.dt.day_of_week
+
+# score_data.day_of_week = score_data.day_of_week.map(
+#     {0:"Monday",1:"'Tuesday'",2:"Wednesday",3:"Thursday",4:"'Friday'",
+#      5:"Saturday",6:"'Sunday'"} )
+# score_data.day_of_week = pd.Categorical(
+#     score_data.day_of_week, 
+#     # ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
+#     ["Tuesday","Friday","Sunday"]) # Shooting days only
+
+plt.xlabel("Distance")
+plt.ylabel("Average Arrow Score")
+
+cmap = ListedColormap(["red", "orange", "yellow", "green", "blue", "indigo", "violet"])
+hue_order = [0,1,2,3,4,5,6]
+
+sns.scatterplot(
+    data = score_data,
+    x = "distance", y = "arrow_average",
+    # marker = "o", size = "days_since_first_entry",
+    hue = "day_of_week",
+    palette = cmap
+)
+
+plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).max().arrow_average, "k:")
+plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).mean().arrow_average, "g--")
+plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).min().arrow_average, "k:")
+
+plt.show(block=False)
+plt.savefig("fig.png")

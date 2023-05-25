@@ -16,6 +16,7 @@ a {
 
 a:hover {
     color: var(--yb_dark_blue);
+    font-weight: bold;
 }
 
 h1, h2, h3, h4 {
