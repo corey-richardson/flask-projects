@@ -352,4 +352,8 @@ $384.24 + 199.128 = 583.368 \approx 583$
 
 This score would be enough to achieve a Bowman 3rd Class classification.
 
-*After the competition:* (i will try to remember to update this)
+*After the competition:* 
+- 60 yards: 7.63 / 47.9%
+- 50 yards: 7.67 / 50%
+
+`:(`
