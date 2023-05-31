@@ -1,0 +1,26 @@
+<link href="static/style.css" rel="stylesheet" />
+
+<form action="/" method="post">
+
+    {{ get_score_data.hidden_tag() }}
+
+    <h2> {{ get_score_data.distance.label }} </h2>
+    <table>
+        <tr>
+            {% for btn in get_score_data.distance %}
+            <td>{{ btn()     }}</td>
+            <td>{{ btn.label }}</td>
+            {% endfor %}
+        </tr>
+    </table> <br>
+
+    <h2> {{ get_score_data.is_comp.label }} </h2>
+    {{ get_score_data.is_comp() }}
+
+    <h2> {{get_score_data.days_till.label}}</h2>
+    <h4>(since {{ most_recent_date }})</h3>
+    {{ get_score_data.days_till() }}
+
+    {{ get_score_data.submit() }}
+
+</form>
