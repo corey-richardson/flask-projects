@@ -13,6 +13,8 @@
 - [submithtml](#submithtml)
 - [stylecss](#stylecss)
 - [predicted-results](#predicted-results)
+- [post-competition-changes](#post-competition-changes)
+- [plotting](#plotting)
 
 ---
 
