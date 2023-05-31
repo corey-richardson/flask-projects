@@ -33,12 +33,21 @@ most_recent_date = max(score_data.date).strftime("%Y-%m-%d")
 features = score_data[["distance","days_since_first_entry","is_comp"]]
 scored = score_data[["arrow_average","golds_pct"]]
 
+# Split the data into training and testing subsets
+# This ensures there is 'real' data left unseen by the model which can be 
+# used to score the models accuracy.
+# THERE IS A DANGER HERE: if the 20% testing subset includes the very few datapoints with
+# "is_comp" equal to 1 then the model will have no values to train this feature on.
+# To resolve this issue I need more data, however this is obviously easier said than done...
 X_train, X_test, y_train, y_test = train_test_split(
     features, scored, test_size = 0.2, random_state = 123)
 
+# Creates the LinReg model and trains it with the training subset
 model = linear_model.LinearRegression()
 model.fit(X_train, y_train)
 
+# Score the model
+# This is done on training AND testing data to highlight overfitting
 train_score = model.score(X_train, y_train)
 test_score = model.score(X_test, y_test)
 print(f"Train Model Score: {train_score}")
@@ -49,27 +58,37 @@ print(f"Test Model Score: {test_score}\n")
 @app.route('/', methods=["GET","POST"])
 def index():
     get_score_data = GetScoreData()
+    # On submission...
     if get_score_data.validate_on_submit():
+        # Getters for form data
         distance = get_score_data.distance.data
         days_till = get_score_data.days_till.data
         is_comp = get_score_data.is_comp.data
         
+        # Sanitise input
         distance, days_till = float(distance), float(days_till)
         
+        # Use the trained model to predict output variables from input variables
+        # max(score_data.days_since_first_entry) + days_till 
+        # --> Most recent entry to .csv file + user specified number of days
         guesses = model.predict([[distance, max(score_data.days_since_first_entry) + days_till, is_comp]])
         
+        # Sanitise output
+        # Max possible score is 10
+        # Max gold_pct is 100%
         if guesses[0][0] > 10:
             guesses[0][0] == f"10.00 {guesses[0][0]}"
         if guesses[0][1] > 100:
             guesses[0][1] = 100
 
-    
+        # Save vars to server-side-stored session data
         session["distance"] = distance
         session["days_till"] = days_till
         session["avg_score"] = guesses[0][0]
         session["gold_pct"] = guesses[0][1]
         session["is_comp"] = is_comp
         
+        # Redirect to the 'submitted' path
         return redirect(url_for(
             'submitted',
             _external=True, 
@@ -80,14 +99,15 @@ def index():
 
 @app.route('/submitted', methods=["GET","POST"])
 def submitted():
-    
+    # Retrieve vars from server-side-stored session data
     distance = session["distance"]
     days_till = session["days_till"]
     avg_score = session["avg_score"]
     gold_pct = session["gold_pct"]
     is_comp = session["is_comp"]
     
-    return render_template( # should use redirect here but wouldnt work oops
+    # Pass all template vars in here
+    return render_template(
         "submit.html",
         distance = distance,
         days_till = days_till,
@@ -95,12 +115,14 @@ def submitted():
         gold_pct = f"{gold_pct:.2f}",
         is_comp = is_comp,
         _external=True, _scheme='https')
-    
+
+# PLOTTING
 from matplotlib import pyplot as plt
 from matplotlib.colors import ListedColormap
 import seaborn as sns
 print("plotting")
 
+# Create dataframe column converting the datetime object to a day of week string
 score_data["day_of_week"] = score_data.date.dt.day_of_week
 
 # score_data.day_of_week = score_data.day_of_week.map(
@@ -111,12 +133,16 @@ score_data["day_of_week"] = score_data.date.dt.day_of_week
 #     # ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
 #     ["Tuesday","Friday","Sunday"]) # Shooting days only
 
+# Figure labels
 plt.xlabel("Distance")
 plt.ylabel("Average Arrow Score")
 
+# Colour Map used to differentiate days of week
 cmap = ListedColormap(["red", "orange", "yellow", "green", "blue", "indigo", "violet"])
-hue_order = [0,1,2,3,4,5,6]
 
+# Scatterplot of distance against arrow average
+# Style: O markers if not competition, X markers if is competition
+# Hue: Change colour of marker depending on day of week of shoot, uses 'cmap' to discern colours
 sns.scatterplot(
     data = score_data,
     x = "distance", y = "arrow_average",
@@ -125,6 +151,7 @@ sns.scatterplot(
     palette = cmap
 )
 
+# Plot lines for min / avg / max arrow scores at each distance
 plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).max().arrow_average, "k:")
 plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).mean().arrow_average, "g--")
 plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).min().arrow_average, "k:")
