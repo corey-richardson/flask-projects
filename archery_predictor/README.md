@@ -14,6 +14,7 @@
 - [stylecss](#stylecss)
 - [predicted-results](#predicted-results)
 - [post-competition-changes](#post-competition-changes)
+- [summary-statistics](#summary-statistics)
 - [plotting](#plotting)
 
 ---
@@ -398,9 +399,81 @@ A current limitation of this feature is the lack of datapoints for the model to 
 
 ---
 
+## Summary Statistics
+
+These lines use `Pandas` `.groupby()` method to display mean statistics for the `arrow_average` [average arrow score], `arrows` [arrows shot] and `golds_pct` [golds percentage] columns.
+
+It seperates these statistics by:
+- Day of Week
+- Month and Year
+- Distance to Target
+- Is it a competition shoot?
+
+```py
+# Display the trends depending on day of week
+print(f"\n\nScore Data grouped by Day of Week: \n{score_data.groupby(score_data.day_of_week)[['arrow_average','arrows','golds_pct']].mean()}\n")
+# Display the trends depending on month and year
+print(f"Score Data grouped by Month: \n{score_data.groupby([score_data.date.dt.year, score_data.date.dt.month])[['arrow_average','arrows','golds_pct']].mean()}\n")
+# Display the trends depending on month and year ALSO seperated by Distance to target
+print(f"Score Data grouped by Month by Distance: \n{score_data.groupby([score_data.distance, score_data.date.dt.year, score_data.date.dt.month])[['arrow_average','arrows','golds_pct']].mean()}\n")
+# Display the trends depending on distance
+print(f"Score Data grouped by Distance: \n{score_data.groupby(['distance'])[['arrow_average','arrows','golds_pct']].mean()}\n")
+# Display the trends depending on whether or not the shoot was at a competition
+print(f"Score Data grouped by Competition Status: \n{score_data.groupby(['is_comp'])[['arrow_average','arrows','golds_pct']].mean()}\n")
+```
+This outputs:
+```
+Score Data grouped by Day of Week: 
+             arrow_average  arrows  golds_pct
+day_of_week                                  
+1                 8.330000   27.75  69.444444
+4                 8.343333   32.00  68.981481
+6                 8.369375   32.25  72.352431
+
+Score Data grouped by Month: 
+           arrow_average     arrows  golds_pct
+date date                                     
+2023 4          8.656250  33.000000  83.159722
+     5          8.149444  29.666667  62.692901
+     6          8.667500  33.000000  83.333333
+
+Score Data grouped by Month by Distance: 
+                    arrow_average     arrows  golds_pct
+distance date date                                     
+30       2023 4          8.797500  33.000000  89.930556
+              5          8.670000  36.000000  83.333333
+              6          8.667500  33.000000  83.333333
+40       2023 4          8.515000  33.000000  76.388889
+              5          8.284000  22.800000  66.111111
+50       2023 5          8.076667  29.333333  61.419753
+60       2023 5          7.970000  40.000000  53.935185
+
+Score Data grouped by Distance: 
+          arrow_average     arrows  golds_pct
+distance                                     
+30             8.725556  33.333333  86.265432
+40             8.386667  27.333333  70.679012
+50             8.076667  29.333333  61.419753
+60             7.970000  40.000000  53.935185
+
+Score Data grouped by Competition Status: 
+         arrow_average     arrows  golds_pct
+is_comp                                     
+0             8.403929  30.642857  72.470238
+1             7.650000  36.000000  48.958333
+```
+
+The aim of these statistics is to highlight relationship affecting my scores. For example:
+- Does shooting on a Tuesday after work decrease my average score per arrow?
+- Does shooting on a Sunday in the morning increase my average score per arrow? 
+- Does my average score increase as time goes on? Am I improving?
+- Has my average score increase or decrease during the time period after making a change to my equipement? 
+
+---
+
 ## Plotting
 
-I used Matplotlib's Pyplot module and the Seaborn module to plot how my minimum, average and maximum arrow average score is affected by the distance being shot, the day of week the shooting occurs and whether or not it is done at a competition event
+I used Matplotlib's `pyplot` module and the `seaborn` module to plot how my minimum, average and maximum arrow average score is affected by the distance being shot, the day of week the shooting occurs and whether or not it is done at a competition event
 
 ```py
 from matplotlib import pyplot as plt
@@ -408,47 +481,69 @@ from matplotlib.colors import ListedColormap
 import seaborn as sns
 print("plotting")
 
-score_data["day_of_week"] = score_data.date.dt.day_of_week
-
+# Figure labels
 plt.xlabel("Distance")
 plt.ylabel("Average Arrow Score")
 
-cmap = ListedColormap(["red", "orange", "yellow", "green", "blue", "indigo", "violet"])
+# Colour Map used to differentiate days of week or by month
+cmap_seven = plt.cm.get_cmap('viridis', 7)
+cmap_twelve = plt.cm.get_cmap('viridis', 12)
 
-sns.scatterplot(
-    data = score_data,
-    x = "distance", y = "arrow_average",
-    style = "is_comp",
-    hue = "day_of_week",
-    palette = cmap
-)
+# Scatterplot of distance against arrow average
+# Style: O markers if not competition, X markers if is competition
+# Hue: Change colour of marker depending on day of week of shoot, uses 'cmap' to discern colours
+def plot_by(hue_type, label, cmap):
+    plt.clf()
+    sns.scatterplot(
+        data = score_data,
+        x = "distance", y = "arrow_average",
+        style = "is_comp",
+        hue = hue_type,
+        palette = cmap
+    )
 
-plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).max().arrow_average, "k:")
-plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).mean().arrow_average, "g--")
-plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).min().arrow_average, "k:")
+    # Plot lines for min / avg / max arrow scores at each distance
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).max().arrow_average, "k:")
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).mean().arrow_average, "g--")
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).min().arrow_average, "k:")
+    
+    plt.show(block=False)
+    plt.savefig(f"{label}_fig.png")
 
-plt.show(block=False)
-plt.savefig("fig.png")
+plot_by(score_data.day_of_week, "day_of_week", cmap_seven)    
+plot_by(score_data.date.dt.month, "month", cmap_twelve)
 ```
 
 This outputs the following graph.
 
-![fig.png](/archery_predictor/fig.png)
+![fig.png](/archery_predictor/day_of_week_fig.png)
 
-These lines plot all the datapoints as a scatter plot.
+These lines clear the figure and plot all the datapoints as a scatter plot.
 ```py
-sns.scatterplot(
-    data = score_data,
-    x = "distance", y = "arrow_average",
-    style = "is_comp",
-    hue = "day_of_week",
-    palette = cmap
-)
+    plt.clf()
+    sns.scatterplot(
+        data = score_data,
+        x = "distance", y = "arrow_average",
+        style = "is_comp",
+        hue = hue_type,
+        palette = cmap
+    )
 ```
 
 `style = "is_comp"` controls the marker style with circle markers representing non-competition shoots and X markers representing competition shoots.
 
-`hue = "day_of_week", palette = cmap` controls the colour styling with each colour representing a different day of the week from a pre-defined `ListedColorMap` object.
+`hue = hue_type, palette = cmap` controls the colour styling with each colour representing either a different day of the week or different month depending on how the function is called. 
+```py
+plot_by(score_data.day_of_week, "day_of_week", cmap_seven)    
+plot_by(score_data.date.dt.month, "month", cmap_twelve)
+```
+
+The function takes in as parameters:
+- the data to plot
+- the label to assign to the saved image
+- the colour map to use; either 'viridis' spaced into 7 or 12 bins
+
+![month fig](/archery_predictor/month_fig.png)
 
 These lines plot the minimum, average and maximum score values for each distance as line graphs.
 ```py

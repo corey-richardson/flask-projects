@@ -29,12 +29,19 @@ score_data["days_since_first_entry"] = (
 # days till feature since this date.
 most_recent_date = max(score_data.date).strftime("%Y-%m-%d")
 
-# Display the trends depending on month
-print(f"\n\nScore Data grouped by Month: \n{score_data.groupby(score_data.date.dt.month).mean()}\n")
+# Create dataframe column converting the datetime object to a day of week string
+score_data["day_of_week"] = score_data.date.dt.day_of_week
+
+# Display the trends depending on day of week
+print(f"\n\nScore Data grouped by Day of Week: \n{score_data.groupby(score_data.day_of_week)[['arrow_average','arrows','golds_pct']].mean()}\n")
+# Display the trends depending on month and year
+print(f"Score Data grouped by Month: \n{score_data.groupby([score_data.date.dt.year, score_data.date.dt.month])[['arrow_average','arrows','golds_pct']].mean()}\n")
+# Display the trends depending on month and year ALSO seperated by Distance to target
+print(f"Score Data grouped by Month by Distance: \n{score_data.groupby([score_data.distance, score_data.date.dt.year, score_data.date.dt.month])[['arrow_average','arrows','golds_pct']].mean()}\n")
 # Display the trends depending on distance
-print(f"Score Data grouped by Distance: \n{score_data.groupby(['distance']).mean()}\n")
+print(f"Score Data grouped by Distance: \n{score_data.groupby(['distance'])[['arrow_average','arrows','golds_pct']].mean()}\n")
 # Display the trends depending on whether or not the shoot was at a competition
-print(f"Score Data grouped by Competition Status: \n{score_data.groupby(['is_comp']).mean()}\n")
+print(f"Score Data grouped by Competition Status: \n{score_data.groupby(['is_comp'])[['arrow_average','arrows','golds_pct']].mean()}\n")
 
 # Select features to predict FROM and features to predict TO
 features = score_data[["distance","days_since_first_entry","is_comp"]]
@@ -78,7 +85,9 @@ def index():
         # Use the trained model to predict output variables from input variables
         # max(score_data.days_since_first_entry) + days_till 
         # --> Most recent entry to .csv file + user specified number of days
-        guesses = model.predict([[distance, max(score_data.days_since_first_entry) + days_till, is_comp]])
+        guesses = model.predict(
+            [[distance, max(score_data.days_since_first_entry) + days_till, is_comp]]
+        )
         
         # Sanitise output
         # Max possible score is 10
@@ -129,9 +138,6 @@ from matplotlib.colors import ListedColormap
 import seaborn as sns
 print("plotting")
 
-# Create dataframe column converting the datetime object to a day of week string
-score_data["day_of_week"] = score_data.date.dt.day_of_week
-
 # score_data.day_of_week = score_data.day_of_week.map(
 #     {0:"Monday",1:"'Tuesday'",2:"Wednesday",3:"Thursday",4:"'Friday'",
 #      5:"Saturday",6:"'Sunday'"} )
@@ -144,24 +150,31 @@ score_data["day_of_week"] = score_data.date.dt.day_of_week
 plt.xlabel("Distance")
 plt.ylabel("Average Arrow Score")
 
-# Colour Map used to differentiate days of week
-cmap = ListedColormap(["red", "orange", "yellow", "green", "blue", "indigo", "violet"])
+# Colour Map used to differentiate days of week or by month
+cmap_seven = plt.cm.get_cmap('viridis', 7)
+cmap_twelve = plt.cm.get_cmap('viridis', 12)
 
 # Scatterplot of distance against arrow average
 # Style: O markers if not competition, X markers if is competition
 # Hue: Change colour of marker depending on day of week of shoot, uses 'cmap' to discern colours
-sns.scatterplot(
-    data = score_data,
-    x = "distance", y = "arrow_average",
-    style = "is_comp",
-    hue = "day_of_week",
-    palette = cmap
-)
+def plot_by(hue_type, label, cmap):
+    plt.clf()
+    sns.scatterplot(
+        data = score_data,
+        x = "distance", y = "arrow_average",
+        style = "is_comp",
+        hue = hue_type,
+        palette = cmap
+    )
 
-# Plot lines for min / avg / max arrow scores at each distance
-plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).max().arrow_average, "k:")
-plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).mean().arrow_average, "g--")
-plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).min().arrow_average, "k:")
+    # Plot lines for min / avg / max arrow scores at each distance
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).max().arrow_average, "k:")
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).mean().arrow_average, "g--")
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).min().arrow_average, "k:")
+    
+    plt.show(block=False)
+    plt.savefig(f"{label}_fig.png")
 
-plt.show(block=False)
-plt.savefig("fig.png")
+plot_by(score_data.day_of_week, "day_of_week", cmap_seven)    
+plot_by(score_data.date.dt.month, "month", cmap_twelve)
+
