@@ -37,11 +37,11 @@ print(f"\n\nScore Data grouped by Day of Week: \n{score_data.groupby(score_data.
 # Display the trends depending on month and year
 print(f"Score Data grouped by Month: \n{score_data.groupby([score_data.date.dt.year, score_data.date.dt.month])[['arrow_average','arrows','golds_pct']].mean()}\n")
 # Display the trends depending on month and year ALSO seperated by Distance to target
-print(f"Score Data grouped by Month by Distance: \n{score_data.groupby([score_data.distance, score_data.date.dt.year, score_data.date.dt.month])[['arrow_average','arrows','golds_pct']].mean()}\n")
+print(f"Score Data grouped by Distance by Month: \n{score_data.groupby([score_data.distance, score_data.date.dt.year, score_data.date.dt.month])[['arrow_average','arrows','golds_pct']].mean()}\n")
 # Display the trends depending on distance
 print(f"Score Data grouped by Distance: \n{score_data.groupby(['distance'])[['arrow_average','arrows','golds_pct']].mean()}\n")
 # Display the trends depending on whether or not the shoot was at a competition
-print(f"Score Data grouped by Competition Status: \n{score_data.groupby(['is_comp'])[['arrow_average','arrows','golds_pct']].mean()}\n")
+print(f"Score Data grouped by Competition Status: \n{score_data.groupby([score_data.distance, score_data.is_comp])[['arrow_average','arrows','golds_pct']].mean()}\n")
 
 # Select features to predict FROM and features to predict TO
 features = score_data[["distance","days_since_first_entry","is_comp"]]

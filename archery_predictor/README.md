@@ -437,7 +437,7 @@ date date
      5          8.149444  29.666667  62.692901
      6          8.667500  33.000000  83.333333
 
-Score Data grouped by Month by Distance: 
+Score Data grouped by Distance by Month: 
                     arrow_average     arrows  golds_pct
 distance date date                                     
 30       2023 4          8.797500  33.000000  89.930556
@@ -457,10 +457,14 @@ distance
 60             7.970000  40.000000  53.935185
 
 Score Data grouped by Competition Status: 
-         arrow_average     arrows  golds_pct
-is_comp                                     
-0             8.403929  30.642857  72.470238
-1             7.650000  36.000000  48.958333
+                  arrow_average     arrows  golds_pct
+distance is_comp                                     
+30       0             8.725556  33.333333  86.265432
+40       0             8.386667  27.333333  70.679012
+50       0             8.127500  30.000000  62.847222
+         1             7.670000  24.000000  50.000000
+60       0             8.140000  36.000000  56.944444
+         1             7.630000  48.000000  47.916667
 ```
 
 The aim of these statistics is to highlight relationship affecting my scores. For example:
@@ -468,6 +472,8 @@ The aim of these statistics is to highlight relationship affecting my scores. Fo
 - Does shooting on a Sunday in the morning increase my average score per arrow? 
 - Does my average score increase as time goes on? Am I improving?
 - Has my average score increase or decrease during the time period after making a change to my equipement? 
+- By how much does my score drop when I increase the distance?
+- Does shooting in a competition - with added nerves - decrease my average score?
 
 ---
 
