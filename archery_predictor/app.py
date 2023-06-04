@@ -29,6 +29,13 @@ score_data["days_since_first_entry"] = (
 # days till feature since this date.
 most_recent_date = max(score_data.date).strftime("%Y-%m-%d")
 
+# Display the trends depending on month
+print(f"\n\nScore Data grouped by Month: \n{score_data.groupby(score_data.date.dt.month).mean()}\n")
+# Display the trends depending on distance
+print(f"Score Data grouped by Distance: \n{score_data.groupby(['distance']).mean()}\n")
+# Display the trends depending on whether or not the shoot was at a competition
+print(f"Score Data grouped by Competition Status: \n{score_data.groupby(['is_comp']).mean()}\n")
+
 # Select features to predict FROM and features to predict TO
 features = score_data[["distance","days_since_first_entry","is_comp"]]
 scored = score_data[["arrow_average","golds_pct"]]
