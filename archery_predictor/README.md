@@ -424,34 +424,34 @@ print(f"Score Data grouped by Competition Status: \n{score_data.groupby(['is_com
 This outputs:
 ```
 Score Data grouped by Day of Week: 
-             arrow_average  arrows  golds_pct
-day_of_week                                  
-1                 8.330000   27.75  69.444444
-4                 8.343333   32.00  68.981481
-6                 8.369375   32.25  72.352431
+             arrow_average     arrows  golds_pct
+day_of_week                                     
+1                 8.330000  27.750000  69.444444
+4                 8.343333  32.000000  68.981481
+6                 8.298462  39.692308  69.701826
 
 Score Data grouped by Month: 
-           arrow_average     arrows  golds_pct
-date date                                     
-2023 4          8.656250  33.000000  83.159722
-     5          8.149444  29.666667  62.692901
-     6          8.667500  33.000000  83.333333
+           arrow_average      arrows  golds_pct
+date date                                      
+2023 4          8.656250   33.000000  83.159722
+     5          8.149444   29.666667  62.692901
+     6          8.640000  132.000000  81.818182
 
 Score Data grouped by Distance by Month: 
-                    arrow_average     arrows  golds_pct
-distance date date                                     
-30       2023 4          8.797500  33.000000  89.930556
-              5          8.670000  36.000000  83.333333
-              6          8.667500  33.000000  83.333333
-40       2023 4          8.515000  33.000000  76.388889
-              5          8.284000  22.800000  66.111111
-50       2023 5          8.076667  29.333333  61.419753
-60       2023 5          7.970000  40.000000  53.935185
+                    arrow_average      arrows  golds_pct
+distance date date                                      
+30       2023 4          8.797500   33.000000  89.930556
+              5          8.670000   36.000000  83.333333
+              6          8.640000  132.000000  81.818182
+40       2023 4          8.515000   33.000000  76.388889
+              5          8.284000   22.800000  66.111111
+50       2023 5          8.076667   29.333333  61.419753
+60       2023 5          7.970000   40.000000  53.935185
 
 Score Data grouped by Distance: 
           arrow_average     arrows  golds_pct
 distance                                     
-30             8.725556  33.333333  86.265432
+30             8.750000  50.000000  87.478956
 40             8.386667  27.333333  70.679012
 50             8.076667  29.333333  61.419753
 60             7.970000  40.000000  53.935185
@@ -459,7 +459,7 @@ distance
 Score Data grouped by Competition Status: 
                   arrow_average     arrows  golds_pct
 distance is_comp                                     
-30       0             8.725556  33.333333  86.265432
+30       0             8.750000  50.000000  87.478956
 40       0             8.386667  27.333333  70.679012
 50       0             8.127500  30.000000  62.847222
          1             7.670000  24.000000  50.000000
