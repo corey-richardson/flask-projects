@@ -86,7 +86,9 @@ def index():
         # max(score_data.days_since_first_entry) + days_till 
         # --> Most recent entry to .csv file + user specified number of days
         guesses = model.predict(
-            [[distance, max(score_data.days_since_first_entry) + days_till, is_comp]]
+            [[distance, 
+              max(score_data.days_since_first_entry) + days_till, 
+              is_comp]]
         )
         
         # Sanitise output
@@ -111,7 +113,10 @@ def index():
             scheme='https'
         ))
      
-    return render_template("index.html", get_score_data=get_score_data, most_recent_date = most_recent_date)
+    return render_template(
+        "index.html", 
+        get_score_data=get_score_data, most_recent_date = most_recent_date
+    )
 
 @app.route('/submitted', methods=["GET","POST"])
 def submitted():

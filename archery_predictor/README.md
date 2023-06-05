@@ -63,32 +63,51 @@ print(f"Test Model Score: {test_score}\n")
 @app.route('/', methods=["GET","POST"])
 def index():
     get_score_data = GetScoreData()
+    # On submission...
     if get_score_data.validate_on_submit():
+        # Getters for form data
         distance = get_score_data.distance.data
         days_till = get_score_data.days_till.data
+        is_comp = get_score_data.is_comp.data
         
+        # Sanitise input
         distance, days_till = float(distance), float(days_till)
         
-        guesses = model.predict([[distance, max(score_data.days_since_first_entry) + days_till]])
+        # Use the trained model to predict output variables from input variables
+        # max(score_data.days_since_first_entry) + days_till 
+        # --> Most recent entry to .csv file + user specified number of days
+        guesses = model.predict(
+            [[distance, 
+              max(score_data.days_since_first_entry) + days_till, 
+              is_comp]]
+        )
         
+        # Sanitise output
+        # Max possible score is 10
+        # Max gold_pct is 100%
         if guesses[0][0] > 10:
             guesses[0][0] == f"10.00 {guesses[0][0]}"
         if guesses[0][1] > 100:
             guesses[0][1] = 100
 
-    
+        # Save vars to server-side-stored session data
         session["distance"] = distance
         session["days_till"] = days_till
         session["avg_score"] = guesses[0][0]
         session["gold_pct"] = guesses[0][1]
+        session["is_comp"] = is_comp
         
+        # Redirect to the 'submitted' path
         return redirect(url_for(
             'submitted',
             _external=True, 
             scheme='https'
         ))
      
-    return render_template("index.html", get_score_data=get_score_data, most_recent_date = most_recent_date)
+    return render_template(
+        "index.html", 
+        get_score_data=get_score_data, most_recent_date = most_recent_date
+    )
 ```
 
 In the index route - `127.0.0.1:5000/` - the Form object is called and validated.
