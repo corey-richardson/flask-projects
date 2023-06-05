@@ -134,17 +134,8 @@ def submitted():
 
 # PLOTTING
 from matplotlib import pyplot as plt
-from matplotlib.colors import ListedColormap
 import seaborn as sns
 print("plotting")
-
-# score_data.day_of_week = score_data.day_of_week.map(
-#     {0:"Monday",1:"'Tuesday'",2:"Wednesday",3:"Thursday",4:"'Friday'",
-#      5:"Saturday",6:"'Sunday'"} )
-# score_data.day_of_week = pd.Categorical(
-#     score_data.day_of_week, 
-#     # ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
-#     ["Tuesday","Friday","Sunday"]) # Shooting days only
 
 # Figure labels
 plt.xlabel("Distance")
