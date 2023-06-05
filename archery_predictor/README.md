@@ -519,7 +519,8 @@ cmap_twelve = plt.cm.get_cmap('viridis', 12)
 
 # Scatterplot of distance against arrow average
 # Style: O markers if not competition, X markers if is competition
-# Hue: Change colour of marker depending on day of week of shoot, uses 'cmap' to discern colours
+# Hue: Change colour of marker depending on day of week of shoot, 
+#      uses 'cmap' to discern colours
 def plot_by(hue_type, label, cmap):
     plt.clf()
     sns.scatterplot(
