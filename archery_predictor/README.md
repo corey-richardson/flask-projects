@@ -388,15 +388,18 @@ This score would be enough to achieve a Bowman 3rd Class classification.
 The Brixham Archers Open Competition showed me how scores can change with the added pressure. As such, I added a feature to `is_comp` to the model. This value takes a `0` or `1` value for where `1` is True. 
 
 ```py
-print(f"\n{score_data.groupby(['distance', 'is_comp']).mean()}\n")
+print(f"Score Data grouped by Competition Status: \n{score_data.groupby([score_data.distance, score_data.is_comp])[['arrow_average','arrows','golds_pct']].mean()}\n")
 ```
 ```
-                  arrow_average
-distance is_comp               
-50       0             8.127500
-         1             7.670000
-60       0             8.140000
-         1             7.630000
+Score Data grouped by Competition Status: 
+                  arrow_average     arrows  golds_pct
+distance is_comp                                     
+30       0             8.750000  50.000000  87.478956
+40       0             8.351250  30.000000  69.097222
+50       0             8.085714  30.857143  61.111111
+         1             7.670000  24.000000  50.000000
+60       0             8.140000  36.000000  56.944444
+         1             7.630000  48.000000  47.916667
 ```
 
 A `BooleanField` from `wtforms` is used to create a checkbox taking the input.
