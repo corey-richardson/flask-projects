@@ -128,6 +128,7 @@ guesses = model.predict([[distance, max(score_data.days_since_first_entry) + day
 > `+ days_till` then adds the desired elapsed number of days to this value.
 
 Data sanitisation is used here for when the model predicts values which are out of range of the real possible values. For example, the maximum score on a 122cm target is 10, and you can't have over 100% of your arrows being gold.
+> 10 is the highest possible score when shooting a metric round using 10-zone scoring (10,9,8,7,6,5,4,3,2,1); when shooting an imperial round using 5-zone scoring (9,7,5,3,1) the maximum score is 9.
 ```py
 if guesses[0][0] > 10:
     guesses[0][0] == f"10.00 {guesses[0][0]}"
