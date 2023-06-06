@@ -441,7 +441,7 @@ print(f"Score Data grouped by Month by Distance: \n{score_data.groupby([score_da
 # Display the trends depending on distance
 print(f"Score Data grouped by Distance: \n{score_data.groupby(['distance'])[['arrow_average','arrows','golds_pct']].mean()}\n")
 # Display the trends depending on whether or not the shoot was at a competition
-print(f"Score Data grouped by Competition Status: \n{score_data.groupby(['is_comp'])[['arrow_average','arrows','golds_pct']].mean()}\n")
+print(f"Score Data grouped by Competition Status: \n{score_data.groupby([score_data.distance, score_data.is_comp])[['arrow_average','arrows','golds_pct']].mean()}\n")
 ```
 This outputs:
 ```
