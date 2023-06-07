@@ -481,7 +481,10 @@ dist_comp_cols = dist_comp[['arrow_average','arrows','golds_pct']]
 dist_comp_summary = dist_comp_cols.mean()
 print(f"Score Data grouped by Competition Status: \n{dist_comp_summary}\n")
 ```
-> These were originally single-line expressions but I expanded them out to multiple lines to be (mostly) within the 80 character line rule and for "readability"; I'm not sure it had the desired effect. 
+> These were originally single-line expressions but I expanded them out to multiple lines to be (mostly) within the 80 character line rule and for "readability"; I'm not sure it had the desired effect. Was originally:
+```py
+print(f"Score Data grouped by Month: \n{score_data.groupby([score_data.date.dt.year, score_data.date.dt.month])[['arrow_average','arrows','golds_pct']].mean()}\n")
+```
 
 This outputs:
 ```
