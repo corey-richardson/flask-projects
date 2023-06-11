@@ -203,8 +203,8 @@ plt.xlabel("Distance")
 plt.ylabel("Average Arrow Score")
 
 # Colour Map used to differentiate days of week or by month
-cmap_seven = plt.cm.get_cmap('viridis', 7)
-cmap_twelve = plt.cm.get_cmap('viridis', 12)
+cmap_seven = plt.cm.get_cmap('cool', 7)
+cmap_twelve = plt.cm.get_cmap('cool', 12)
 
 # Scatterplot of distance against arrow average
 # Style: O markers if not competition, X markers if is competition
