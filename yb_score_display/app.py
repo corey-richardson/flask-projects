@@ -82,7 +82,7 @@ def add_score():
     )
 
 # How many names to display:
-N_WINNERS = 3
+N_WINNERS = 5
 
 # Helper function that gets the top 3 scores in the grouped data and returns
 # them as a list in the format [["Name", score], ]
