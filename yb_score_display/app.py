@@ -1,5 +1,5 @@
 # Flask Imports
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, redirect, url_for
 from forms import GetScoreData
 # Pandas - dataframe management
 import pandas as pd
