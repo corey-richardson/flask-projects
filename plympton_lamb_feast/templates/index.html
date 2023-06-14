@@ -4,6 +4,7 @@
 <table>
     <tr>
         <tr>
+            <th>Ranking</th>
             <th>Name</th>
             <th>Score</th>
             <th>Age</th>
@@ -12,6 +13,7 @@
     <tbody>
         {% for row in score_data %}
         <tr>
+            <td>{{loop.index0 + 1}}</td>
             <td>{{row[0]}}</td>
             <td>{{row[1]}}</td>
             <td>{{row[2]}}</td>
@@ -19,7 +21,4 @@
         {% endfor %}
     </tbody>
 </table>
-
-<br>
-<a href="/add_score">Add a score</a>
 {% endblock %}
