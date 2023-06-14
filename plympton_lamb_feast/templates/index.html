@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<table>
+    <tr>
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Age</th>
+        </tr>
+    </tr>
+    <tbody>
+        {% for row in score_data %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<a href="/add_score">Add a score</a>
+{% endblock %}
