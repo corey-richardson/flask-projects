@@ -81,4 +81,4 @@ name,score,age_category,sex,email,phone_num
 ```
 > NOTE: The empty new-line after the headers is REQUIRED.
 
-I intentionally did not add functionality within the web application ...
+I intentionally did not add functionality within the web application to avoid any accidental deletions during the event day.
