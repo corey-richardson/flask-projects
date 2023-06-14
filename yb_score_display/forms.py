@@ -8,6 +8,7 @@ class GetScoreData(FlaskForm):
     name = StringField("Name: ", validators=[DataRequired()])
     score = IntegerField("Score: ", validators=[DataRequired()])
     age_category = SelectField("Age Category: ", choices=["Senior", "Junior"])
+    sex = SelectField("Sex: ", choices=["Gents", "Ladies", "Prefer not to say", "Other"])
     email = EmailField("Email: ")
     phone_num = StringField("Phone Number: ")
     

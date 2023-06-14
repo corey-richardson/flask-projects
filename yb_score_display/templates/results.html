@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+
+
+<h2>Overall Highest Scores</h2>
+<ol>
+    {% for person in overalls %}
+        <li><b>{{loop.index0 + 1}}.</b> {{ person[0] }} - {{ person[1] }}</li>
+    {% endfor %}
+</ol>
+
+<h2>Senior Highest Scores</h2>
+<ol>
+    {% for person in seniors %}
+        <li><b>{{loop.index0 + 1}}.</b> {{ person[0] }} - {{ person[1] }}</li>
+    {% endfor %}
+</ol>
+
+<h2>Junior Highest Scores</h2>
+<ol>
+    {% for person in juniors %}
+        <li><b>{{loop.index0 + 1}}.</b> {{ person[0] }} - {{ person[1] }}</li>
+    {% endfor %}
+</ol>
+
+<h2>Gents Highest Scores</h2>
+<ol>
+    {% for person in gents %}
+        <li><b>{{loop.index0 + 1}}.</b> {{ person[0] }} - {{ person[1] }}</li>
+    {% endfor %}
+</ol>
+
+<h2>Ladies Highest Scores</h2>
+<ol>
+    {% for person in ladies %}
+        <li><b>{{loop.index0 + 1}}.</b> {{ person[0] }} - {{ person[1] }}</li>
+    {% endfor %}
+</ol>
+
+
+{% endblock %}

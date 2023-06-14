@@ -14,6 +14,9 @@
     <h2> {{ get_score_data.age_category.label }} </h2>
     {{ get_score_data.age_category() }}
 
+    <h2> {{ get_score_data.sex.label }} </h2>
+    {{ get_score_data.sex() }}
+
     <h2> {{ get_score_data.email.label }} </h2>
     {{ get_score_data.email() }}
 
@@ -24,4 +27,5 @@
     {{ get_score_data.submit() }}
 
 </form>
+
 {% endblock %}
