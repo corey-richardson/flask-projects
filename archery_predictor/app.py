@@ -63,7 +63,7 @@ print(f"\n\nScore Data grouped by Day of Week: \n{day_of_week_merged}\n")
 # Display the trends depending on month and year
 month_and_year = score_data.groupby(
     [score_data.date.dt.year, score_data.date.dt.month])
-month_and_year_cols = month_and_year[['arrow_average','arrows','golds_pct']]
+month_and_year_cols = month_and_year[['arrow_average','distance','arrows','golds_pct']]
 month_and_year_summary = month_and_year_cols.mean()
 print(f"Score Data grouped by Month: \n{month_and_year_summary}\n")
 
