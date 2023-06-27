@@ -90,20 +90,6 @@ print(f"Score Data grouped by Competition Status: \n{dist_comp_summary}\n")
 features = score_data[["distance","days_since_first_entry","is_comp"]]
 scored = score_data[["arrow_average","golds_pct"]]
 
-print(f"  i : Train : Test  : Sum")
-for i in range(200):
-    X_train, X_test, y_train, y_test = train_test_split(
-        features, scored, test_size = 0.2, random_state = i)
-    model = linear_model.LinearRegression()
-    model.fit(X_train, y_train)
-    train_score = model.score(X_train, y_train)
-    test_score = model.score(X_test, y_test)
-    # print(f"Train Model Score [{i}]: {train_score}")
-    # print(f"Test Model Score [{i}]: {test_score}\n")
-    if train_score > 0.5 and train_score + test_score > 1.2:
-        print(f"{i:>3} : {train_score:>3.3f} : {test_score:>3.3f} : {train_score + test_score :>3.3f}")
-
-
 # Split the data into training and testing subsets
 # This ensures there is 'real' data left unseen by the model which can be 
 # used to score the models accuracy.
@@ -111,7 +97,7 @@ for i in range(200):
 # "is_comp" equal to 1 then the model will have no values to train this feature on.
 # To resolve this issue I need more data, however this is obviously easier said than done...
 X_train, X_test, y_train, y_test = train_test_split(
-    features, scored, test_size = 0.2, random_state = 94)
+    features, scored, test_size = 0.2, random_state = 864)
 # Creates the LinReg model and trains it with the training subset
 model = linear_model.LinearRegression()
 model.fit(X_train, y_train)
