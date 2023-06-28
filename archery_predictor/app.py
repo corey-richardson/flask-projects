@@ -196,13 +196,12 @@ cmap_twelve = plt.cm.get_cmap('cool', 12)
 # Style: O markers if not competition, X markers if is competition
 # Hue: Change colour of marker depending on day of week of shoot, uses 'cmap' to discern colours
 def plot_by(hue_type, label, cmap):
-    plt.clf()
     sns.scatterplot(
         data = score_data,
         x = "distance", y = "arrow_average",
         style = "is_comp",
         hue = hue_type,
-        palette = cmap
+        palette = cmap,
     )
 
     # Plot lines for min / avg / max arrow scores at each distance
@@ -212,7 +211,17 @@ def plot_by(hue_type, label, cmap):
     
     plt.show(block=False)
     plt.savefig(f"{label}_fig.png")
+    plt.clf()
 
 plot_by(score_data.day_of_week, "day_of_week", cmap_seven)    
 plot_by(score_data.date.dt.month, "month", cmap_twelve)
 
+sns.scatterplot(
+    data = score_data,
+    x = "date", y = "arrow_average",
+    style = "is_comp",
+    hue = "distance",
+    palette = plt.cm.get_cmap('tab20'),
+)
+plt.savefig("distance_fig.png")
+plt.clf()
