@@ -204,13 +204,15 @@ def plot_by(hue_type, label, cmap):
     plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).min().arrow_average, "k:")
     
     plt.show(block=False)
-    plt.savefig(f"{label}_fig.png")
+    plt.savefig(f"graphs/{label}_fig.png")
     plt.clf()
 
 plot_by(score_data.day_of_week, "day_of_week", cmap_seven)    
 plot_by(score_data.date.dt.month, "month", cmap_twelve)
 
-
+####################
+# distance_fig.png #
+####################
 cmap = plt.cm.get_cmap('tab10', score_data.distance.nunique())
 sns.scatterplot(
     data = score_data,
@@ -223,10 +225,10 @@ sns.scatterplot(
 averages = score_data.groupby(['distance']).mean().arrow_average
 for i, avg in enumerate(averages):
     plt.axhline(avg, color=cmap.colors[i], alpha=0.7, linestyle=':')
-
+    
 # 252 Scheme Boundaries
 plt.axhline(280 / 36, color='k', linestyle="dashed", alpha=0.7) # Compound
 plt.axhline(252 / 36, color='k', linestyle="dashed", alpha=0.7) # Recurve
 
-plt.savefig("distance_fig.png")
+plt.savefig("graphs/distance_fig.png")
 plt.clf()

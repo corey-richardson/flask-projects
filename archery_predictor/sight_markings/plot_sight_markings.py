@@ -13,7 +13,7 @@ def convert_to_yards(distance, is_metres):
 
 distance_to_predict = convert_to_yards(distance_to_predict, is_metres)
 
-scope = pd.read_csv(f"static/sight_marks.csv", header = 0)
+scope = pd.read_csv(f"../static/sight_marks.csv", header = 0)
 distances = scope["distance"]
 sight_markings = scope["sight_marking"]
 
