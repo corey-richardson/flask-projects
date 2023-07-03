@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecret'
 
 # Load dataframe
-score_data = pd.read_csv(f"static/arrow_scores_summer_23.csv", header = 0)
+score_data = pd.read_csv(f"static/arrow_scores_outdoors_23.csv", header = 0)
 
 # Convert the date column from objects to datetypes 
 score_data.date = pd.to_datetime(score_data.date)
@@ -210,12 +210,23 @@ def plot_by(hue_type, label, cmap):
 plot_by(score_data.day_of_week, "day_of_week", cmap_seven)    
 plot_by(score_data.date.dt.month, "month", cmap_twelve)
 
+
+cmap = plt.cm.get_cmap('tab10', score_data.distance.nunique())
 sns.scatterplot(
     data = score_data,
     x = "date", y = "arrow_average",
     style = "is_comp",
     hue = "distance",
-    palette = plt.cm.get_cmap('tab20'),
+    palette = cmap,
 )
+
+averages = score_data.groupby(['distance']).mean().arrow_average
+for i, avg in enumerate(averages):
+    plt.axhline(avg, color=cmap.colors[i], alpha=0.7, linestyle=':')
+
+# 252 Scheme Boundaries
+plt.axhline(280 / 36, color='k', linestyle="dashed", alpha=0.7) # Compound
+plt.axhline(252 / 36, color='k', linestyle="dashed", alpha=0.7) # Recurve
+
 plt.savefig("distance_fig.png")
 plt.clf()
