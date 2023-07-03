@@ -10,14 +10,8 @@ from forms import GetScoreData
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecret'
 
-# SET TARGET FACE SIZE / TYPE HERE
-TARGET = "122"
-# Options:
-# - "40"
-# - "122"
-
 # Load dataframe
-score_data = pd.read_csv(f"static/archery_{TARGET}.csv", header = 0)
+score_data = pd.read_csv(f"static/arrow_scores_summer_23.csv", header = 0)
 
 # Convert the date column from objects to datetypes 
 score_data.date = pd.to_datetime(score_data.date)
