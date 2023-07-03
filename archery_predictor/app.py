@@ -176,7 +176,6 @@ def submitted():
 # PLOTTING
 from matplotlib import pyplot as plt
 import seaborn as sns
-print("plotting")
 
 # Figure labels
 plt.xlabel("Distance")
@@ -199,9 +198,9 @@ def plot_by(hue_type, label, cmap):
     )
 
     # Plot lines for min / avg / max arrow scores at each distance
-    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).max().arrow_average, "k:")
-    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).mean().arrow_average, "g--")
-    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).min().arrow_average, "k:")
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).arrow_average.max(), "k:")
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).arrow_average.mean(), "g--")
+    plt.plot(score_data.distance.unique(), score_data.groupby(['distance']).arrow_average.min(), "k:")
     
     plt.show(block=False)
     plt.savefig(f"graphs/{label}_fig.png")
@@ -232,3 +231,12 @@ plt.axhline(252 / 36, color='k', linestyle="dashed", alpha=0.7) # Recurve
 
 plt.savefig("graphs/distance_fig.png")
 plt.clf()
+
+# Arrows Per Day
+arrows_per_day = score_data.groupby(score_data.date).arrows.sum()
+plt.plot(arrows_per_day)
+plt.savefig("graphs/arrows_per_day.png")
+
+print(f"Analysis derived from {sum(arrows_per_day)} datapoints.")
+
+# This needs tidying up lol
